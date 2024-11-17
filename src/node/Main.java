@@ -2,53 +2,26 @@ package node;
 
 public class Main {
     public static void main(String[] args) {
-        // Criando os municípios
-        Municipio municipio1 = new Municipio("001", "Municipio A", "Regiao 1", 100000, 0.8);
-        Municipio municipio2 = new Municipio("002", "Municipio B", "Regiao 2", 200000, 1.2);
-        Municipio municipio3 = new Municipio("003", "Municipio C", "Regiao 3", 300000, 0.5);
-        Municipio municipio4 = new Municipio("004", "Municipio D", "Regiao 2", 150000, 0.7);
+        // Testando a árvore BST
+        System.out.println("arvore BST:");
+        BST<Integer> bst = new BST<>();
+        bst.insert(1);
+        bst.insert(2);
+        bst.insert(3);
+        bst.insert(4);
+        bst.insert(5);
+        bst.insert(6);
+        bst.printTree(); // Imprime a árvore BST
 
-        // Criando a árvore AVL
-        AVL avl = new AVL(null);
-
-        // Inserindo os municípios
-        System.out.println("Inserindo municipios na arvore AVL...");
-        avl.insert(municipio1);
-        avl.insert(municipio2);
-        avl.insert(municipio3);
-        avl.insert(municipio4);
-
-        // Exibindo a estrutura da árvore
-        System.out.println("\nEstrutura da Arvore AVL apos insercao:");
-        avl.printTree();
-
-        // Exibindo as informações detalhadas dos nós
-        System.out.println("\nInformacoes dos nos da Arvore AVL:");
-        avl.printInfo();
-
-        // Deletando um município
-        System.out.println("\nDeletando Municipio A...");
-        avl.delete(municipio1);
-
-        // Exibindo a estrutura da árvore após deleção
-        System.out.println("\nEstrutura da Arvore AVL apos delecao de Municipio A:");
-        avl.printTree();
-
-        // Exibindo as informações detalhadas dos nós após deleção
-        System.out.println("\nInformacoes dos nos da Arvore AVL apos delecao:");
-        avl.printInfo();
-
-        // Deletando outro município
-        System.out.println("\nDeletando Municipio B...");
-        avl.delete(municipio2);
-
-        // Exibindo a estrutura da árvore após a segunda deleção
-        System.out.println("\nEstrutura da Arvore AVL apos delecao de Municipio B:");
-        avl.printTree();
-
-        // Exibindo as informações detalhadas dos nós após a segunda deleção
-        System.out.println("\nInformacoes dos nos da Arvore AVL apos a segunda delecao:");
-        avl.printInfo();
+        // Testando a árvore AVL
+        System.out.println("\narvore AVL:");
+        AVL<Integer> avl = new AVL<>();
+        avl.insert(1);
+        avl.insert(2);
+        avl.insert(3);
+        avl.insert(4);
+        avl.insert(5);
+        avl.insert(6);
+        avl.printTree(); // Imprime a árvore AVL
     }
 }
-

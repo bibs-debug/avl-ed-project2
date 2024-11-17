@@ -1,18 +1,21 @@
 package node;
 
-public class Node<T extends Comparable<T>> {
-    private T value;
-    private Node<T> left;
-    private Node<T> right;
-    private int height;
+public class Node<T> {
 
+    private T value;  // O valor armazenado no nó (no caso, um Municipio)
+    private Node<T> left;  // Filho à esquerda
+    private Node<T> right; // Filho à direita
+    private int height;    // A altura do nó, usada para balanceamento da árvore AVL
+
+    // Construtor
     public Node(T value) {
         this.value = value;
         this.left = null;
         this.right = null;
-        this.height = 0;
+        this.height = 0; // A altura do nó é inicialmente 0
     }
 
+    // Getters e Setters
     public T getValue() {
         return value;
     }
@@ -45,19 +48,16 @@ public class Node<T extends Comparable<T>> {
         this.height = height;
     }
 
+    // Verifica se o nó é uma folha (não tem filhos)
     public boolean isLeaf() {
         return left == null && right == null;
     }
 
-    // Método para calcular o grau de um nó (quantidade de filhos)
-    public int getDegree() {
-        int degree = 0;
-        if (this.left != null) {
-            degree++;
-        }
-        if (this.right != null) {
-            degree++;
-        }
-        return degree;
+    // Atualiza a altura do nó com base nos filhos
+    public void updateHeight() {
+        this.height = 1 + Math.max(
+            (left == null ? -1 : left.getHeight()),
+            (right == null ? -1 : right.getHeight())
+        );
     }
 }
