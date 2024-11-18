@@ -1,5 +1,6 @@
 import pandas as pd
 
+#trazendo só os dados relevante pra analise
 df = pd.read_csv(
     "dataset.csv",
     encoding='latin1',

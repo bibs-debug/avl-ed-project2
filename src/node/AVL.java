@@ -1,6 +1,9 @@
 package node;
 
-public class AVL<T extends Comparable<T>> {
+import java.util.LinkedList;
+import java.util.Queue;
+
+public class AVL extends BST<T extends Comparable<T>> {
     private Node<T> root;
 
     public AVL() {
@@ -41,19 +44,26 @@ public class AVL<T extends Comparable<T>> {
     private Node<T> balance(Node<T> node) {
         int balanceFactor = getBalance(node);
 
+        // Debug statement
+        System.out.println("Balancing node: " + node.getValue() + " with balance factor: " + balanceFactor);
+
         // Se o nó estiver desbalanceado à esquerda
         if (balanceFactor > 1) {
             if (getBalance(node.getLeft()) < 0) {
+                System.out.println("Left-Right case");
                 node.setLeft(rotateLeft(node.getLeft()));
             }
+            System.out.println("Left-Left case");
             return rotateRight(node);
         }
 
         // Se o nó estiver desbalanceado à direita
         if (balanceFactor < -1) {
             if (getBalance(node.getRight()) > 0) {
+                System.out.println("Right-Left case");
                 node.setRight(rotateRight(node.getRight()));
             }
+            System.out.println("Right-Right case");
             return rotateLeft(node);
         }
 
@@ -88,22 +98,46 @@ public class AVL<T extends Comparable<T>> {
 
     // Função para imprimir a árvore em formato vertical
     public void printTree() {
+        if (root == null) {
+            System.out.println("Tree is empty");
+            return;
+        }
+
         printTree(root, 0);
     }
 
     private void printTree(Node<T> node, int level) {
         if (node == null) return;
 
-        // Primeiro imprime a subárvore direita
         printTree(node.getRight(), level + 1);
-
-        // Imprime o nó atual com a indentação adequada
-        for (int i = 0; i < level; i++) {
-            System.out.print("    ");
-        }
-        System.out.println(node.getValue());
-
-        // Depois imprime a subárvore esquerda
+        System.out.println(" ".repeat(level * 4) + node.getValue());
         printTree(node.getLeft(), level + 1);
+    }
+
+    // Verifica se a árvore está balanceada
+    public boolean isBalanced() {
+        return isBalanced(root);
+    }
+
+    private boolean isBalanced(Node<T> node) {
+        if (node == null) return true;
+        int balanceFactor = getBalance(node);
+        return Math.abs(balanceFactor) <= 1 && isBalanced(node.getLeft()) && isBalanced(node.getRight());
+    }
+
+    public static void main(String[] args) {
+        AVL<Integer> avlTree = new AVL<>();
+        
+        avlTree.insert(10);
+        avlTree.insert(20);
+        avlTree.insert(30);
+        avlTree.insert(40);
+        avlTree.insert(50);
+        avlTree.insert(25);
+        System.out.println("root:" + avlTree.root.getValue()); 
+        System.out.println("AVL Tree:");
+        avlTree.printTree();
+
+        System.out.println("Is the tree balanced? " + avlTree.isBalanced());
     }
 }
