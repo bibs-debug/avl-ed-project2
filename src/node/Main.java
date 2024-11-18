@@ -1,50 +1,32 @@
 package node;
 
-
 public class Main {
 
+    // Metodo principal
     public static void main(String[] args) {
-        // Criando a árvore AVL
-        AVL<String> avl = new AVL<>();
+        // Criando alguns municipios para testar
+        Municipio municipio1 = new Municipio(123, "Sao Paulo", "2020", 100, 50, 1.5, 30, 2.5);
+        Municipio municipio2 = new Municipio(456, "Rio de Janeiro", "2020", 80, 40, 1.2, 25, 2.1);
+        Municipio municipio3 = new Municipio(789, "Belo Horizonte", "2020", 90, 45, 1.3, 28, 2.3);
 
-        // Inserindo valores na árvore AVL
-        String[] valores = {"D", "B", "A", "C", "F", "E", "H", "G"};
-        
-        System.out.println("### Testando a AVL ###");
-        System.out.println("Inserindo valores: D, B, A, C, F, E, H, G");
+        // Criando a arvore BST
+        BST<Municipio> bst = new BST<>();
+        bst.insert(municipio1);
+        bst.insert(municipio2);
+        bst.insert(municipio3);
 
-        // Inserindo valores na AVL
-        for (String valor : valores) {
-            avl.insert(valor);
-        }
+        // Exibir os valores na arvore BST (em ordem)
+        System.out.println("Arvore BST (em ordem):");
+        bst.inOrderTraversal(bst.getNode());  // Percurso em ordem para BST
 
-        System.out.println("\nPré-ordem (AVL): ");
-        avl.preOrderTraversal(avl.getNode());
-        System.out.println();
+        // Criando a arvore AVL
+        AVL<Municipio> avl = new AVL<>();
+        avl.insert(municipio1);
+        avl.insert(municipio2);
+        avl.insert(municipio3);
 
-        System.out.println("Em-ordem (AVL): ");
-        avl.inOrderTraversal(avl.getNode());
-        System.out.println();
-
-        System.out.println("Pós-ordem (AVL): ");
-        avl.postOrderTraversal(avl.getNode());
-        System.out.println();
-
-        // Removendo um nó da AVL
-        System.out.println("\nRemovendo o nó 'C' da AVL...");
-        avl.delete("C");
-
-        System.out.println("\nApós remoção do nó 'C' (AVL): ");
-        System.out.println("Pré-ordem (AVL): ");
-        avl.preOrderTraversal(avl.getNode());
-        System.out.println();
-
-        System.out.println("Em-ordem (AVL): ");
-        avl.inOrderTraversal(avl.getNode());
-        System.out.println();
-
-        System.out.println("Pós-ordem (AVL): ");
-        avl.postOrderTraversal(avl.getNode());
-        System.out.println();
+        // Exibir os valores na arvore AVL (em ordem)
+        System.out.println("\nArvore AVL (em ordem):");
+        avl.inOrderTraversal(avl.getNode());  // Percurso em ordem para AVL
     }
 }

@@ -120,19 +120,23 @@ public class BST<T extends Comparable<T>> {
             System.out.print(node.getValue() + " "); // Imprime o valor na mesma linha
         }
     }
-
+    
     public void printInfo() {
-        System.out.println("Informacoes detalhadas dos nos:");
-        printInfo(this.node);
+        System.out.println("Arvore:");
+        printInfo(this.node);  // Chama a função para a árvore BST
     }
     
     private void printInfo(Node<T> node) {
         if (node != null) {
+            // Primeiramente, visita o nó esquerdo
             printInfo(node.getLeft());
-            System.out.println(node.getValue().toString());
+            
+            // Depois, imprime o valor do nó atual na nova linha
+            System.out.println(node.getValue()); // Aqui imprime o valor do nó em uma linha nova
+            
+            // Por fim, visita o nó direito
             printInfo(node.getRight());
         }
     }
-    
-    
+  
 }
