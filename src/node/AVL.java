@@ -1,109 +1,99 @@
 package node;
 
-public class AVL<T extends Comparable<T>> {
-    private Node<T> root;
-
+public class AVL<T extends Comparable<T>> extends BST<T> {
     public AVL() {
-        this.root = null;
+        super();
     }
-
-    // Inserir valor na árvore
-    public void insert(T value) {
-        root = insert(root, value);
-    }
-
-    private Node<T> insert(Node<T> node, T value) {
+    @Override
+    public Node<T> insert(Node<T> node, T municipio) {
         if (node == null) {
-            return new Node<>(value);
+            return new Node<>(municipio);
+        } 
+        if (municipio.compareTo(node.getValue()) < 0) {
+            node.setLeft(insert(node.getLeft(), municipio));
+        } else if (municipio.compareTo(node.getValue()) > 0) {
+            node.setRight(insert(node.getRight(), municipio));
+        } else {
+            return node; 
         }
-
-        if (value.compareTo(node.getValue()) < 0) {
-            node.setLeft(insert(node.getLeft(), value));
-        } else if (value.compareTo(node.getValue()) > 0) {
-            node.setRight(insert(node.getRight(), value));
-        }
-
-        // Atualiza a altura do nó
-        updateHeight(node);
-
-        // Balanceia a árvore
         return balance(node);
     }
-
-    // Atualiza a altura do nó
-    private void updateHeight(Node<T> node) {
-        int leftHeight = (node.getLeft() != null) ? node.getLeft().getHeight() : 0;
-        int rightHeight = (node.getRight() != null) ? node.getRight().getHeight() : 0;
-        node.setHeight(1 + Math.max(leftHeight, rightHeight));
-    }
-
-    // Balanceamento da árvore
-    private Node<T> balance(Node<T> node) {
-        int balanceFactor = getBalance(node);
-
-        // Se o nó estiver desbalanceado à esquerda
-        if (balanceFactor > 1) {
-            if (getBalance(node.getLeft()) < 0) {
-                node.setLeft(rotateLeft(node.getLeft()));
+    @Override
+    public Node<T> delete(Node<T> node, T municipio) {
+        if (node == null) {
+            return null;
+        } 
+        if (municipio.compareTo(node.getValue()) < 0) {
+            node.setLeft(delete(node.getLeft(), municipio));
+        } else if (municipio.compareTo(node.getValue()) > 0) {
+            node.setRight(delete(node.getRight(), municipio));
+        } else {
+            if (node.getLeft() == null || node.getRight() == null) {
+                node = (node.getLeft() != null) ? node.getLeft() : node.getRight();
+            } else {
+                Node<T> temp = getMinValueNode(node.getRight());
+                node.setValue(temp.getValue());
+                node.setRight(delete(node.getRight(), temp.getValue()));
             }
+        }
+        return balance(node);
+    }
+    private Node<T> balance(Node<T> node) {
+        if (node == null) return null;
+        
+        updateHeight(node);
+        int balanceFactor = getBalanceFactor(node);
+        if (balanceFactor > 1 && getBalanceFactor(node.getLeft()) >= 0) {
             return rotateRight(node);
         }
-
-        // Se o nó estiver desbalanceado à direita
-        if (balanceFactor < -1) {
-            if (getBalance(node.getRight()) > 0) {
-                node.setRight(rotateRight(node.getRight()));
-            }
+        if (balanceFactor > 1 && getBalanceFactor(node.getLeft()) < 0) {
+            node.setLeft(rotateLeft(node.getLeft()));
+            return rotateRight(node);
+        }
+        if (balanceFactor < -1 && getBalanceFactor(node.getRight()) <= 0) {
             return rotateLeft(node);
         }
-
+        if (balanceFactor < -1 && getBalanceFactor(node.getRight()) > 0) {
+            node.setRight(rotateRight(node.getRight()));
+            return rotateLeft(node);
+        }
         return node;
     }
-
-    // Calcula o fator de balanceamento do nó
-    private int getBalance(Node<T> node) {
-        if (node == null) return 0;
-        return (node.getLeft() != null ? node.getLeft().getHeight() : 0) - (node.getRight() != null ? node.getRight().getHeight() : 0);
+    private int getBalanceFactor(Node<T> node) {
+        return (node == null) ? 0 : height(node.getLeft()) - height(node.getRight());
     }
-
-    // Rotação à esquerda
-    private Node<T> rotateLeft(Node<T> node) {
-        Node<T> newRoot = node.getRight();
-        node.setRight(newRoot.getLeft());
-        newRoot.setLeft(node);
-        updateHeight(node);
-        updateHeight(newRoot);
-        return newRoot;
-    }
-
-    // Rotação à direita
-    private Node<T> rotateRight(Node<T> node) {
-        Node<T> newRoot = node.getLeft();
-        node.setLeft(newRoot.getRight());
-        newRoot.setRight(node);
-        updateHeight(node);
-        updateHeight(newRoot);
-        return newRoot;
-    }
-
-    // Função para imprimir a árvore em formato vertical
-    public void printTree() {
-        printTree(root, 0);
-    }
-
-    private void printTree(Node<T> node, int level) {
-        if (node == null) return;
-
-        // Primeiro imprime a subárvore direita
-        printTree(node.getRight(), level + 1);
-
-        // Imprime o nó atual com a indentação adequada
-        for (int i = 0; i < level; i++) {
-            System.out.print("    ");
+    private void updateHeight(Node<T> node) {
+        if (node != null) {
+            node.setHeight(1 + Math.max(height(node.getLeft()), height(node.getRight())));
         }
-        System.out.println(node.getValue());
-
-        // Depois imprime a subárvore esquerda
-        printTree(node.getLeft(), level + 1);
+    }
+    private int height(Node<T> node) {
+        return (node == null) ? -1 : node.getHeight();
+    }
+    private Node<T> rotateRight(Node<T> y) {
+        Node<T> x = y.getLeft();
+        Node<T> T2 = x.getRight();
+        
+        x.setRight(y);
+        y.setLeft(T2);
+        updateHeight(y);
+        updateHeight(x);
+        return x;
+    }
+    private Node<T> rotateLeft(Node<T> x) {
+        Node<T> y = x.getRight();
+        Node<T> T2 = y.getLeft();
+        y.setLeft(x);
+        x.setRight(T2);
+        updateHeight(x);
+        updateHeight(y);
+        return y;
+    }
+    private Node<T> getMinValueNode(Node<T> node) {
+        while (node.getLeft() != null) {
+            node = node.getLeft();
+        }
+        return node;
     }
 }
+
