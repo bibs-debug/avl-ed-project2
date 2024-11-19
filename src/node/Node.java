@@ -1,5 +1,6 @@
 package node;
 
+
 public class Node<T> {
 
     private T value;  // O valor armazenado no nó (no caso, um Municipio)
