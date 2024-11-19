@@ -9,10 +9,10 @@ public class Municipio implements Comparable<Municipio> {
     private int pesCad;
     private double fPBFDomi;
     private int fPBFEp;
-    private int fCADEp;
-   
+    private double fCADEp; // Alterado para double
+    
     // Construtor completo
-    public Municipio(int codMun, String nome, String referencia, int pesPBF, int pesCad, double fPBFDomi, int fPBFEp, int fCADEp) {
+    public Municipio(int codMun, String nome, String referencia, int pesPBF, int pesCad, double fPBFDomi, int fPBFEp, double fCADEp) {
         if (codMun <= 0) {
             throw new IllegalArgumentException("Codigo do municipio deve ser maior que zero.");
         }
@@ -50,9 +50,9 @@ public class Municipio implements Comparable<Municipio> {
                 ", referencia='" + referencia + '\'' +
                 ", pesPBF=" + pesPBF +
                 ", pesCad=" + pesCad +
-                ", fPBFDomi=" + fPBFDomi +
+                ", fPBFDomi=" + String.format("%.2f", fPBFDomi) +
                 ", fPBFEp=" + fPBFEp +
-                ", fCADEp=" + fCADEp +
+                ", fCADEp=" + String.format("%.2f", fCADEp) +
                 '}';
     }
 }
