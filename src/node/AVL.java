@@ -1,99 +1,139 @@
 package node;
 
-public class AVL<T extends Comparable<T>> extends BST<T> {
-    public AVL() {
-        super();
-    }
+public class AVL extends BST {
+
     @Override
-    public Node<T> insert(Node<T> node, T municipio) {
-        if (node == null) {
-            return new Node<>(municipio);
-        } 
-        if (municipio.compareTo(node.getValue()) < 0) {
-            node.setLeft(insert(node.getLeft(), municipio));
-        } else if (municipio.compareTo(node.getValue()) > 0) {
-            node.setRight(insert(node.getRight(), municipio));
-        } else {
-            return node; 
-        }
-        return balance(node);
+    protected TreeNode createNode(Municipio municipio) {
+        return new AVLNode(municipio);  
     }
+
     @Override
-    public Node<T> delete(Node<T> node, T municipio) {
+    protected TreeNode insertRec(TreeNode node, TreeNode newNode) {
+        node = super.insertRec(node, newNode);
+        return balance((AVLNode) node);  
+    }
+
+    private AVLNode balance(AVLNode node) {
         if (node == null) {
             return null;
-        } 
-        if (municipio.compareTo(node.getValue()) < 0) {
-            node.setLeft(delete(node.getLeft(), municipio));
-        } else if (municipio.compareTo(node.getValue()) > 0) {
-            node.setRight(delete(node.getRight(), municipio));
-        } else {
-            if (node.getLeft() == null || node.getRight() == null) {
-                node = (node.getLeft() != null) ? node.getLeft() : node.getRight();
-            } else {
-                Node<T> temp = getMinValueNode(node.getRight());
-                node.setValue(temp.getValue());
-                node.setRight(delete(node.getRight(), temp.getValue()));
+        }
+
+        int balanceFactor = getHeight(node.left) - getHeight(node.right);
+
+        if (balanceFactor > 1 && getHeight(node.left.left) >= getHeight(node.left.right)) {
+            return rotateRight(node);
+        }
+
+        if (balanceFactor < -1 && getHeight(node.right.right) >= getHeight(node.right.left)) {
+            return rotateLeft(node);
+        }
+
+        if (balanceFactor > 1 && getHeight(node.left.left) < getHeight(node.left.right)) {
+            node.left = rotateLeft((AVLNode) node.left);
+            return rotateRight(node);
+        }
+
+        if (balanceFactor < -1 && getHeight(node.right.right) < getHeight(node.right.left)) {
+            node.right = rotateRight((AVLNode) node.right);
+            return rotateLeft(node);
+        }
+
+        updateHeight(node);
+        return node;
+    }
+
+    public TreeNode remove(String nome) {
+        root = removeRec(root, nome);
+        return root;
+    }
+
+    private TreeNode removeRec(TreeNode node, String nome) {
+        if (node == null) {
+            return node;
+        }
+
+        // Busca o nó a ser removido
+        if (nome.compareTo(node.municipio.getNome()) < 0) {
+            node.left = removeRec(node.left, nome);
+        } else if (nome.compareTo(node.municipio.getNome()) > 0) {
+            node.right = removeRec(node.right, nome);
+        } else {  // Se encontrou o nó
+            if (node.left == null || node.right == null) {  // Caso com um ou nenhum filho
+                node = (node.left == null) ? node.right : node.left;
+            } else {  // Caso com dois filhos
+                // Encontra o sucessor in-order (menor na subárvore direita)
+                node.municipio = minValue(node.right).municipio;
+                node.right = removeRec(node.right, node.municipio.getNome());
             }
         }
-        return balance(node);
-    }
-    private Node<T> balance(Node<T> node) {
-        if (node == null) return null;
-        
-        updateHeight(node);
-        int balanceFactor = getBalanceFactor(node);
-        if (balanceFactor > 1 && getBalanceFactor(node.getLeft()) >= 0) {
-            return rotateRight(node);
+
+        if (node == null) {
+            return node;
         }
-        if (balanceFactor > 1 && getBalanceFactor(node.getLeft()) < 0) {
-            node.setLeft(rotateLeft(node.getLeft()));
-            return rotateRight(node);
-        }
-        if (balanceFactor < -1 && getBalanceFactor(node.getRight()) <= 0) {
-            return rotateLeft(node);
-        }
-        if (balanceFactor < -1 && getBalanceFactor(node.getRight()) > 0) {
-            node.setRight(rotateRight(node.getRight()));
-            return rotateLeft(node);
-        }
-        return node;
+
+        // Atualiza a altura do nó atual
+        updateHeight((AVLNode) node);
+
+        // Balanceia a árvore
+        return balance((AVLNode) node);
     }
-    private int getBalanceFactor(Node<T> node) {
-        return (node == null) ? 0 : height(node.getLeft()) - height(node.getRight());
-    }
-    private void updateHeight(Node<T> node) {
-        if (node != null) {
-            node.setHeight(1 + Math.max(height(node.getLeft()), height(node.getRight())));
+
+    private TreeNode minValue(TreeNode node) {
+        TreeNode current = node;
+        while (current.left != null) {
+            current = current.left;
         }
+        return current;
     }
-    private int height(Node<T> node) {
-        return (node == null) ? -1 : node.getHeight();
+
+    private int getHeight(TreeNode node) {
+        if (node == null) {
+            return 0;
+        }
+        return ((AVLNode) node).height;
     }
-    private Node<T> rotateRight(Node<T> y) {
-        Node<T> x = y.getLeft();
-        Node<T> T2 = x.getRight();
-        
-        x.setRight(y);
-        y.setLeft(T2);
+
+    private void updateHeight(AVLNode node) {
+        node.height = 1 + Math.max(getHeight(node.left), getHeight(node.right));
+    }
+
+    private AVLNode rotateRight(AVLNode y) {
+        AVLNode x = (AVLNode) y.left;
+        AVLNode T = (AVLNode) x.right;
+
+        x.right = y;
+        y.left = T;
+
         updateHeight(y);
         updateHeight(x);
+
         return x;
     }
-    private Node<T> rotateLeft(Node<T> x) {
-        Node<T> y = x.getRight();
-        Node<T> T2 = y.getLeft();
-        y.setLeft(x);
-        x.setRight(T2);
-        updateHeight(x);
+
+    private AVLNode rotateLeft(AVLNode y) {
+        AVLNode x = (AVLNode) y.right;
+        AVLNode T = (AVLNode) x.left;
+
+        x.left = y;
+        y.right = T;
+
         updateHeight(y);
-        return y;
+        updateHeight(x);
+
+        return x;
     }
-    private Node<T> getMinValueNode(Node<T> node) {
-        while (node.getLeft() != null) {
-            node = node.getLeft();
+
+    @Override
+    public int getHeight() {
+        return getHeightRec(root);
+    }
+
+    private int getHeightRec(TreeNode node) {
+        if (node == null) {
+            return 0;
         }
-        return node;
+        int leftHeight = getHeightRec(node.left);
+        int rightHeight = getHeightRec(node.right);
+        return Math.max(leftHeight, rightHeight) + 1;
     }
 }
-

@@ -1,142 +1,117 @@
-
 package node;
 
-public class BST<T extends Comparable<T>> {
-    
-    protected Node<T> node;
-    public BST() {
-        this.node = null;
+public class BST {
+    protected TreeNode root;
+    protected int comparacoes = 0;
+
+    public void insert(Municipio municipio) {
+        root = insertRec(root, createNode(municipio));
     }
-    public BST(Node<T> node) {
-        this.node = node;  
+
+    protected TreeNode createNode(Municipio municipio) {
+        return new TreeNode(municipio);  
     }
-    public Node<T> getNode() {
-        return node;  
-    }
-    public void setNode(Node<T> node) {
-        this.node = node;
-    }
-    // Verifica se a árvore está vazia
-    public boolean isEmpty() {
-        return node == null;
-    }
-    // Retorna a altura de um nó
-    private int height(Node<T> node) {
+
+    protected TreeNode insertRec(TreeNode node, TreeNode newNode) {
         if (node == null) {
-            return -1;
+            return newNode;
         }
-        return node.getHeight();
-    }
-    // Atualiza a altura do nó após a inserção ou deleção
-    private void updateHeight(Node<T> node) {
-        if (node != null) {
-            node.setHeight(1 + Math.max(height(node.getLeft()), height(node.getRight())));
+
+        comparacoes++;
+
+        if (newNode.municipio.getNome().compareTo(node.municipio.getNome()) < 0) {
+            node.left = insertRec(node.left, newNode);
+        } else if (newNode.municipio.getNome().compareTo(node.municipio.getNome()) > 0) {
+            node.right = insertRec(node.right, newNode);
         }
-    }
-    // Inserção do valor na árvore
-    public Node<T> insert(Node<T> node, T value) {
-        if (node == null) {
-            return new Node<>(value);
-        }
-        if (value.compareTo(node.getValue()) < 0) {
-            node.setLeft(insert(node.getLeft(), value));
-        } else if (value.compareTo(node.getValue()) > 0) {
-            node.setRight(insert(node.getRight(), value));
-        }
-        // Atualiza a altura após a inserção
-        updateHeight(node);
+
         return node;
     }
-    // Deleção do nó
-    public Node<T> delete(Node<T> node, T value) {
-        if (node == null) {
-            return null;
+
+    public TreeNode search(String nome) {
+        return searchRec(root, nome);
+    }
+
+    private TreeNode searchRec(TreeNode node, String nome) {
+        if (node == null || node.municipio.getNome().equals(nome)) {
+            return node;
         }
-        // Buscando o nó a ser deletado
-        if (value.compareTo(node.getValue()) < 0) {
-            node.setLeft(delete(node.getLeft(), value));
-        } else if (value.compareTo(node.getValue()) > 0) {
-            node.setRight(delete(node.getRight(), value));
+
+        comparacoes++;
+
+        if (nome.compareTo(node.municipio.getNome()) < 0) {
+            return searchRec(node.left, nome);
         } else {
-            // Caso o nó tenha 0 ou 1 filho
-            if (node.getLeft() == null || node.getRight() == null) {
-                node = (node.getLeft() != null) ? node.getLeft() : node.getRight();
-            } else {
-                // Caso o nó tenha 2 filhos, pega o sucessor
-                Node<T> temp = getMinValueNode(node.getRight());
-                node.setValue(temp.getValue());
-                node.setRight(delete(node.getRight(), temp.getValue()));
-            }
+            return searchRec(node.right, nome);
         }
-        // Atualiza a altura após a deleção
+    }
+
+    public void inOrderTraversal() {
+        inOrderRec(root);
+    }
+
+    private void inOrderRec(TreeNode node) {
         if (node != null) {
-            updateHeight(node);
+            inOrderRec(node.left);
+            System.out.println(node.municipio);
+            inOrderRec(node.right);
         }
+    }
+
+    public int getHeight() {
+        return getHeightRec(root);
+    }
+
+    private int getHeightRec(TreeNode node) {
+        if (node == null) {
+            return 0;
+        }
+        int leftHeight = getHeightRec(node.left);
+        int rightHeight = getHeightRec(node.right);
+        return Math.max(leftHeight, rightHeight) + 1;
+    }
+
+    public TreeNode remove(String nome) {
+        return root = removeRec(root, nome);
+    }
+
+    private TreeNode removeRec(TreeNode node, String nome) {
+        if (node == null) {
+            return node;
+        }
+
+        comparacoes++;
+
+        if (nome.compareTo(node.municipio.getNome()) < 0) {
+            node.left = removeRec(node.left, nome);
+        } else if (nome.compareTo(node.municipio.getNome()) > 0) {
+            node.right = removeRec(node.right, nome);
+        } else {
+            if (node.left == null) {
+                return node.right;
+            } else if (node.right == null) {
+                return node.left;
+            }
+
+            node.municipio = minValue(node.right);
+
+            node.right = removeRec(node.right, node.municipio.getNome());
+        }
+
         return node;
     }
-    // Encontra o nó com o menor valor (sucessor)
-    private Node<T> getMinValueNode(Node<T> node) {
-        Node<T> current = node;
-        while (current.getLeft() != null) {
-            current = current.getLeft();
+
+    private Municipio minValue(TreeNode node) {
+        Municipio minValue = node.municipio;
+        while (node.left != null) {
+            node = node.left;
+            minValue = node.municipio;
         }
-        return current;
-    }
-    // Função para inserir diretamente na árvore
-    public void insert(T value) {
-        node = insert(node, value);
-    }
-    // Função para deletar diretamente na árvore
-    public void delete(T value) {
-        node = delete(node, value);
-    }
-    // Função para obter a altura da árvore
-    public int getHeight() {
-        return height(node);
-    }
-        // Pré-ordem
-    public void preOrderTraversal(Node<T> node) {
-        if (node != null) {
-            System.out.print(node.getValue() + " "); // Imprime o valor na mesma linha
-            preOrderTraversal(node.getLeft());
-            preOrderTraversal(node.getRight());
-        }
+        return minValue;
     }
 
-    // Em-ordem
-    public void inOrderTraversal(Node<T> node) {
-        if (node != null) {
-            inOrderTraversal(node.getLeft());
-            System.out.print(node.getValue() + " "); // Imprime o valor na mesma linha
-            inOrderTraversal(node.getRight());
-        }
+    public int getComparacoes() {
+        return comparacoes;
     }
 
-    // Pós-ordem
-    public void postOrderTraversal(Node<T> node) {
-        if (node != null) {
-            postOrderTraversal(node.getLeft());
-            postOrderTraversal(node.getRight());
-            System.out.print(node.getValue() + " "); // Imprime o valor na mesma linha
-        }
-    }
-    
-    public void printInfo() {
-        System.out.println("Arvore:");
-        printInfo(this.node);  // Chama a função para a árvore BST
-    }
-    
-    private void printInfo(Node<T> node) {
-        if (node != null) {
-            // Primeiramente, visita o nó esquerdo
-            printInfo(node.getLeft());
-            
-            // Depois, imprime o valor do nó atual na nova linha
-            System.out.println(node.getValue()); // Aqui imprime o valor do nó em uma linha nova
-            
-            // Por fim, visita o nó direito
-            printInfo(node.getRight());
-        }
-    }
-  
 }
