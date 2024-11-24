@@ -1,4 +1,4 @@
-package node;
+package main.java;
 
 public class AVLNode extends TreeNode {
     protected int height;

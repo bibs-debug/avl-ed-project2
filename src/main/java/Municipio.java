@@ -1,4 +1,4 @@
-package node;
+package main.java;
 
 public class Municipio {
     private String nome; //nome do município

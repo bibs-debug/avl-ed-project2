@@ -1,4 +1,4 @@
-package node;
+package main.java;
 
 
 // C:\Users\biabl\OneDrive\Documents\EstruturadeDados\avl-ed-project2\src\dataset\\dataset_2020.csv

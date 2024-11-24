@@ -1,4 +1,4 @@
-package node;
+package main.java;
 
 public class BST {
     protected TreeNode root;

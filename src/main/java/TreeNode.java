@@ -1,4 +1,4 @@
-package node;
+package main.java;
 
 public class TreeNode {
     protected Municipio municipio;  
