@@ -1,19 +1,35 @@
+package main;
 
- //"C:\\Users\\biabl\\OneDrive\\Documents\\EstruturadeDados\\avl-ed-project2-bia-lima\\avl-ed-project2-bia-lima\\src\\resources\\dataset\\\\dataset_2020.csv";
- package main;
+import java.util.List;
 
- public class Main {
+public class Main {
     public static void main(String[] args) {
         BST bst = new BST();
-        
-        // Criação de alguns objetos Municipio
-        Municipio municipio1 = new Municipio(350100401, "São Paulo", 1000, 1500, 80.0, 1200, 50.0);
-        Municipio municipio2 = new Municipio(350100402, "Rio de Janeiro", 2000, 2500, 75.0, 2200, 60.0);
-        Municipio municipio3 = new Municipio(350100403, "Belo Horizonte", 500, 700, 85.0, 600, 45.0);
+
+        // Carregar dataset
+        List<Municipio> municipios = DatasetLoader.carregarDataset("src/resources/dataset/dataset_2020_cleaned.csv");
 
         // Inserção na árvore
-        bst.insert(municipio1);
-        bst.insert(municipio2);
-        bst.insert(municipio3);
+        for (Municipio municipio : municipios) {
+            bst.insert(municipio);
+        }
+
+        // Busca na árvore
+        TreeNode foundNode = bst.search(350100402); // Exemplo de busca
+        if (foundNode != null) {
+            System.out.println("Municipio encontrado: " + foundNode.municipio);
+        } else {
+            System.out.println("Municipio nao encontrado.");
+        }
+
+        // Análise de dados
+        long count = DataAnalysis.countMunicipiosWithMoreThanXPbf(municipios, 1000);
+        System.out.println("Numero de municcpios com mais de 1000 pessoas no PBF: " + count);
+
+        double maxFPbfDomi = DataAnalysis.maxFPbfDomi(municipios);
+        System.out.println("Maior valor registrado no fPbfDomi: " + maxFPbfDomi);
+
+        Municipio maxPesCadMunicipio = DataAnalysis.municipioWithMaxPesCad(municipios);
+        System.out.println("Municipio com maior numero de pessoas no Cadastro unico: " + maxPesCadMunicipio.getNome());
+    }
 }
- }

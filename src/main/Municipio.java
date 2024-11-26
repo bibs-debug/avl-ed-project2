@@ -37,6 +37,7 @@ public class Municipio {
             throw new IllegalArgumentException("Porcentagem de famílias com renda até R$ 218,00 no Cadastro Único deve ser entre 0 e 100");
         }
         */
+        this.codMun = codMun; // Ensure codMun is initialized
         this.nome = nome;
         this.pesPbf = pesPbf;
         this.pesCad = pesCad;
@@ -45,7 +46,6 @@ public class Municipio {
         this.fCadEp = fCadEp;
     }
  
-    
     // Validadores
     private boolean isValidCodMun(long codMun) {
         return codMun >= 0;

@@ -2,14 +2,12 @@ package main;
 
 public class AVL extends BST {
 
-    @Override
     protected TreeNode createNode(Municipio municipio) {
         return new AVLNode(municipio);  
     }
 
-    @Override
-    protected TreeNode insertRec(TreeNode node, TreeNode newNode) {
-        node = super.insertRec(node, newNode);
+    protected TreeNode insertRec(TreeNode node, Municipio municipio) {
+        node = super.insertRec(node, municipio);
         return balance((AVLNode) node);  
     } 
 
@@ -122,7 +120,6 @@ public class AVL extends BST {
         return x;
     }
 
-    @Override
     public int getHeight() {
         return getHeightRec(root);
     }

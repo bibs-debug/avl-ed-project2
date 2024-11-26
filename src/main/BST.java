@@ -2,49 +2,36 @@ package main;
 
 public class BST {
     protected TreeNode root;
-    protected int comparacoes = 0;
 
     public void insert(Municipio municipio) {
-
-        root = insertRec(root, createNode(municipio));
+        root = insertRec(root, municipio);
     }
 
-    protected TreeNode createNode(Municipio municipio) {
-        return new TreeNode(municipio);  
-    }
-
-    protected TreeNode insertRec(TreeNode node, TreeNode newNode) {
-        if (node == null) {
-            return newNode;
-        } 
-
-        comparacoes++;
-
-        if (newNode.municipio.getCodMun() < node.municipio.getCodMun()) {
-            node.left = insertRec(node.left, newNode);
-        } else if (newNode.municipio.getCodMun() > node.municipio.getCodMun()) {
-            node.right = insertRec(node.right, newNode);
+    protected TreeNode insertRec(TreeNode root, Municipio municipio) {
+        if (root == null) {
+            root = new TreeNode(municipio);
+            return root;
         }
-        return node;
+        if (municipio.getCodMun() < root.municipio.getCodMun()) {
+            root.left = insertRec(root.left, municipio);
+        } else if (municipio.getCodMun() > root.municipio.getCodMun()) {
+            root.right = insertRec(root.right, municipio);
+        }
+        return root;
     }
 
     public TreeNode search(long codMun) {
         return searchRec(root, codMun);
     }
-    
-    private TreeNode searchRec(TreeNode node, long codMun) {
-        if (node == null || node.municipio.getCodMun() == codMun) {
-            return node;
-        }
-    
-        comparacoes++;
-    
-        if (codMun < node.municipio.getCodMun()) {
-            return searchRec(node.left, codMun);
-        } else {
-            return searchRec(node.right, codMun);
 
+    private TreeNode searchRec(TreeNode root, long codMun) {
+        if (root == null || root.municipio.getCodMun() == codMun) {
+            return root;
         }
+        if (root.municipio.getCodMun() > codMun) {
+            return searchRec(root.left, codMun);
+        }
+        return searchRec(root.right, codMun);
     }
 
     public void inOrderTraversal() {
@@ -81,8 +68,6 @@ public class BST {
             return node;
         }
 
-        comparacoes++;
-
         if (codMun < node.municipio.getCodMun()) {
             node.left = removeRec(node.left, codMun);
         } else if (codMun > node.municipio.getCodMun()) {
@@ -108,10 +93,6 @@ public class BST {
             minValue = node.municipio;
         }
         return minValue;
-    }
-
-    public int getComparacoes() {
-        return comparacoes;
     }
 
 }

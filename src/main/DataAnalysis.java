@@ -24,14 +24,14 @@ public class DataAnalysis {
         return municipios.stream()
                          .mapToDouble(Municipio::getfPbfDomi)
                          .max()
-                         .orElseThrow(() -> new IllegalArgumentException("Lista de municípios está vazia"));
+                         .orElse(0);
     }
 
     // Pergunta 3: Qual o município com maior número de pessoas no Cadastro Único (PesCad)?
     public static Municipio municipioWithMaxPesCad(List<Municipio> municipios) {
         return municipios.stream()
                          .max((m1, m2) -> Integer.compare(m1.getPesCad(), m2.getPesCad()))
-                         .orElseThrow(() -> new IllegalArgumentException("Lista de municípios está vazia"));
+                         .orElse(null);
     }
 
     // Pergunta 4: Qual a média de famílias com renda até R$ 218,00 no Cadastro Único (fCadEp)?
