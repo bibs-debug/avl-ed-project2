@@ -78,7 +78,8 @@ avl-ed-project2/
 │   ├── Node.java
 │   ├── Main.java
 │   └── Utils.java
-├── data/
-│   └── dataset.csv
+├── resources/
+│   └── dataset/
+├──    └── dataset_2020_cleaned.csv
 ├── README.md
 └── LICENSE
