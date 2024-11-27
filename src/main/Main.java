@@ -22,6 +22,10 @@ public class Main {
             System.out.println("Municipio nao encontrado.");
         }
 
+        // Comparação de desempenho entre AVL e BST
+        Perfomance.compareInsertionPerformance(municipios);
+        Perfomance.compareSearchPerformance(municipios);
+
         // Análise de dados
         long count = DataAnalysis.countMunicipiosWithMoreThanXPbf(municipios, 1000);
         System.out.println("Numero de municcpios com mais de 1000 pessoas no PBF: " + count);

@@ -7,6 +7,9 @@ public class AVL extends BST {
     }
 
     protected TreeNode insertRec(TreeNode node, Municipio municipio) {
+        if (node == null) {
+            return createNode(municipio);
+        }
         node = super.insertRec(node, municipio);
         return balance((AVLNode) node);  
     } 

@@ -4,7 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0eac0a14-1a99-4f9b-a628-c1104d19190d" name="Changes" comment="" />
+    <list default="true" id="0eac0a14-1a99-4f9b-a628-c1104d19190d" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/src/main/java/AVL.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/AVL.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/AVLNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/AVLNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/BST.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/BST.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/DatasetLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DatasetLoader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Municipio.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Municipio.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/TreeNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TreeNode.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -39,9 +47,9 @@
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 1
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
   <component name="ProjectId" id="2p32qmaf6KweeTI3KJTiIUXpmSo" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -78,7 +86,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1731980633443</updated>
-      <workItem from="1731980634408" duration="2941000" />
+      <workItem from="1731980634408" duration="4123000" />
     </task>
     <servers />
   </component>
